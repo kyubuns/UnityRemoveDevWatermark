@@ -55,6 +55,17 @@ namespace RemoveDevWatermark.Editor
             var index = KMP(bytes, nameHex);
             if (index == -1) return "nameHex is not found";
 
+            const int widthIndex = 28;
+            const int widthValue = 115;
+            if (bytes[index + widthIndex] != widthValue) return $"bytes[index + widthIndex]({bytes[index + widthIndex]}) != widthValue({widthValue})";
+            bytes[index + widthIndex] = 0;
+
+            const int heightIndex = 32;
+            const int heightValue = 17;
+            if (bytes[index + heightIndex] != heightValue) return $"bytes[index + heightIndex]({bytes[index + heightIndex]}) != heightValue({heightValue})";
+            bytes[index + heightIndex] = 0;
+
+            File.WriteAllBytes(path, bytes);
             return null;
         }
 
@@ -92,7 +103,7 @@ namespace RemoveDevWatermark.Editor
                 if (bytes[i] == nameHex[j])
                 {
                     if (j == m - 1)
-                        return i - m + 1; // match
+                        return i - m + 1;
                     i++;
                     j++;
                 }
@@ -102,7 +113,7 @@ namespace RemoveDevWatermark.Editor
                     i++;
             }
 
-            return -1; // no match
+            return -1;
         }
     }
 }
