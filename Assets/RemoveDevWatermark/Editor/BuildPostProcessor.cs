@@ -48,7 +48,61 @@ namespace RemoveDevWatermark.Editor
         private static string RemoveDevWatermark(string path)
         {
             if (!File.Exists(path)) return $"{path} not found";
+
+            var bytes = File.ReadAllBytes(path);
+            var nameHex = new byte[] { 0x55, 0x6E, 0x69, 0x74, 0x79, 0x57, 0x61, 0x74, 0x65, 0x72, 0x6D, 0x61, 0x72, 0x6B, 0x2D, 0x64, 0x65, 0x76 }; // "UnityWatermark-dev"
+
+            var index = KMP(bytes, nameHex);
+            if (index == -1) return "nameHex is not found";
+
             return null;
+        }
+
+        private static int[] ComputeFailureFunction(byte[] pattern)
+        {
+            var fail = new int[pattern.Length];
+            var m = pattern.Length;
+            int j;
+
+            fail[0] = -1;
+            for (j = 1; j < m; j++)
+            {
+                var i = fail[j - 1];
+                while ((pattern[j] != pattern[i + 1]) && (i >= 0))
+                    i = fail[i];
+                if (pattern[j] == pattern[i + 1])
+                    fail[j] = i + 1;
+                else
+                    fail[j] = -1;
+            }
+
+            return fail;
+        }
+
+        // ReSharper disable once InconsistentNaming
+        private static int KMP(byte[] bytes, byte[] nameHex)
+        {
+            int i = 0, j = 0;
+            var n = bytes.Length;
+            var m = nameHex.Length;
+            var fail = ComputeFailureFunction(nameHex);
+
+            while (i < n)
+            {
+                if (bytes[i] == nameHex[j])
+                {
+                    if (j == m - 1)
+                        return i - m + 1; // match
+                    i++;
+                    j++;
+                }
+                else if (j > 0)
+                    j = fail[j - 1] + 1;
+                else
+                    i++;
+            }
+
+            return -1; // no match
         }
     }
 }
