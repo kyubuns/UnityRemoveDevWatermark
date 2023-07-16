@@ -1,0 +1,15 @@
+{
+    "name": "dev.kyubuns.removedevwatermark",
+    "displayName": "RemoveDevWatermark",
+    "version": "0.1.0",
+    "unity": "2021.3",
+    "description": "Remove Development Build Watermark",
+    "documentationUrl": "https://github.com/kyubuns/UnityRemoveDevWatermark",
+    "dependencies": {
+    },
+    "author": {
+        "name": "kyubuns",
+        "email": "kyubuns@gmail.com",
+        "url": "https://kyubuns.dev/"
+    }
+}
