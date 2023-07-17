@@ -1,7 +1,7 @@
 Unity Remove Dev Watermark
 ===
 
-Simply importing this package will remove the "Development Build" from the lower right corner of the screen.
+Simply importing this package will remove the "Development Build" from the lower right corner of the screen.  
 This has a number of advantages,
 - Development Build allows you to easily shoot PVs and take screenshots for the app store.
 - No UI overlap with the game's UI.
