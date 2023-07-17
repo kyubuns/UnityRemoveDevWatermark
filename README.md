@@ -7,6 +7,7 @@ This feature allows Development Build to take screenshots for PV and store.
 The following platforms are currently supported
 
 - macOS (BuildTarget.StandaloneOSX)
+- iOS (BuildTarget.iOS)
 
 I hope this feature will be introduced in Unity official.  
 But [this request thread](https://forum.unity.com/threads/remove-development-build-watermark-without-giving-up-the-build-option.944772/) has been neglected for more than 3 years.

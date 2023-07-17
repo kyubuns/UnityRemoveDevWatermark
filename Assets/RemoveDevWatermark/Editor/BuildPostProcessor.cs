@@ -39,6 +39,11 @@ namespace RemoveDevWatermark.Editor
                 var path = Path.Combine(report.summary.outputPath, "Contents", "Resources", "unity default resources");
                 return RemoveDevWatermark(path);
             }
+            else if (report.summary.platform == BuildTarget.iOS)
+            {
+                var path = Path.Combine(report.summary.outputPath, "Data", "unity default resources");
+                return RemoveDevWatermark(path);
+            }
             else
             {
                 return $"Unknown Platform: {report.summary.platform}";
