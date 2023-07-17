@@ -1,8 +1,11 @@
 Unity Remove Dev Watermark
 ===
 
-Simply importing this package will remove the "Development Build" label that appears in the lower right corner on the Development Build.  
-With this feature, you can easily shoot PV footage or take screenshots of application store in Development Build.
+Simply importing this package will remove the "Development Build" from the lower right corner of the screen.
+This has a number of advantages,
+- Development Build allows you to easily shoot PVs and take screenshots for the app store.
+- No UI overlap with the game's UI.
+- (Anything else?)
 
 ![sample](https://github.com/kyubuns/UnityRemoveDevWatermark/assets/961165/21325692-6fbc-4eba-998d-d8db412b6572)
 
