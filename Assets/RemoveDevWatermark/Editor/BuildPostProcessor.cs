@@ -34,7 +34,14 @@ namespace RemoveDevWatermark.Editor
 
         private static string Execute(BuildReport report)
         {
-            if (report.summary.platform == BuildTarget.StandaloneOSX)
+            if (report.summary.platform == BuildTarget.StandaloneWindows || report.summary.platform == BuildTarget.StandaloneWindows64)
+            {
+                var directories = Directory.GetDirectories(report.summary.outputPath, "*_Data", SearchOption.TopDirectoryOnly);
+                if (directories.Length != 1) return $"directories.Length({string.Join(", ", directories)}) != 1";
+                var path = Path.Combine(directories[0], "Resources", "unity default resources");
+                return RemoveDevWatermark(path);
+            }
+            else if (report.summary.platform == BuildTarget.StandaloneOSX)
             {
                 var path = Path.Combine(report.summary.outputPath, "Contents", "Resources", "unity default resources");
                 return RemoveDevWatermark(path);

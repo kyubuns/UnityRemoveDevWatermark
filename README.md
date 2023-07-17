@@ -6,6 +6,7 @@ This feature allows Development Build to take screenshots for PV and store.
 
 The following platforms are currently supported
 
+- Windows (BuildTarget.StandaloneWindows, BuildTarget.StandaloneWindows64)
 - macOS (BuildTarget.StandaloneOSX)
 - iOS (BuildTarget.iOS)
 
