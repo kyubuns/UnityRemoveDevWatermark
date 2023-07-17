@@ -22,17 +22,17 @@ namespace RemoveDevWatermark.Editor
 
             var errorMessage = Execute(report);
 
-            if (string.IsNullOrWhiteSpace(errorMessage))
+            if (errorMessage == null)
             {
                 Debug.Log($"BuildPostProcessor.OnPostprocessBuild / Success");
             }
             else
             {
-                Debug.LogError($"BuildPostProcessor.OnPostprocessBuild / Failed, {errorMessage}");
+                Debug.unityLogger.Log(errorMessage.Value.Item1, $"BuildPostProcessor.OnPostprocessBuild / Failed, {errorMessage.Value.Item2}");
             }
         }
 
-        private static string Execute(BuildReport report)
+        private static (LogType, string)? Execute(BuildReport report)
         {
             if (report.summary.platform == BuildTarget.StandaloneWindows || report.summary.platform == BuildTarget.StandaloneWindows64)
             {
@@ -51,28 +51,28 @@ namespace RemoveDevWatermark.Editor
             }
             else
             {
-                return $"Unknown Platform: {report.summary.platform}";
+                return (LogType.Warning, $"Unknown Platform: {report.summary.platform}");
             }
         }
 
-        private static string RemoveDevWatermark(string path)
+        private static (LogType, string)? RemoveDevWatermark(string path)
         {
-            if (!File.Exists(path)) return $"{path} not found";
+            if (!File.Exists(path)) return (LogType.Error, $"{path} not found");
 
             var bytes = File.ReadAllBytes(path);
             var nameHex = new byte[] { 0x55, 0x6E, 0x69, 0x74, 0x79, 0x57, 0x61, 0x74, 0x65, 0x72, 0x6D, 0x61, 0x72, 0x6B, 0x2D, 0x64, 0x65, 0x76 }; // "UnityWatermark-dev"
 
             var index = KMP(bytes, nameHex);
-            if (index == -1) return "nameHex is not found";
+            if (index == -1) return (LogType.Error, "nameHex is not found");
 
             const int widthIndex = 28;
             const int widthValue = 115;
-            if (bytes[index + widthIndex] != widthValue) return $"bytes[index + widthIndex]({bytes[index + widthIndex]}) != widthValue({widthValue})";
+            if (bytes[index + widthIndex] != widthValue) return (LogType.Error, $"bytes[index + widthIndex]({bytes[index + widthIndex]}) != widthValue({widthValue})");
             bytes[index + widthIndex] = 0;
 
             const int heightIndex = 32;
             const int heightValue = 17;
-            if (bytes[index + heightIndex] != heightValue) return $"bytes[index + heightIndex]({bytes[index + heightIndex]}) != heightValue({heightValue})";
+            if (bytes[index + heightIndex] != heightValue) return (LogType.Error, $"bytes[index + heightIndex]({bytes[index + heightIndex]}) != heightValue({heightValue})");
             bytes[index + heightIndex] = 0;
 
             File.WriteAllBytes(path, bytes);
