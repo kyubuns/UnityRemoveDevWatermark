@@ -68,12 +68,12 @@ namespace RemoveDevWatermark.Editor
             const int widthIndex = 28;
             const int widthValue = 115;
             if (bytes[index + widthIndex] != widthValue) return (LogType.Error, $"bytes[index + widthIndex]({bytes[index + widthIndex]}) != widthValue({widthValue})");
-            bytes[index + widthIndex] = 0;
+            bytes[index + widthIndex] = 1;
 
             const int heightIndex = 32;
             const int heightValue = 17;
             if (bytes[index + heightIndex] != heightValue) return (LogType.Error, $"bytes[index + heightIndex]({bytes[index + heightIndex]}) != heightValue({heightValue})");
-            bytes[index + heightIndex] = 0;
+            bytes[index + heightIndex] = 1;
 
             File.WriteAllBytes(path, bytes);
             return null;
