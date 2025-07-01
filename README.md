@@ -14,6 +14,7 @@ The following platforms are currently supported
 - Windows (BuildTarget.StandaloneWindows, BuildTarget.StandaloneWindows64)
 - macOS (BuildTarget.StandaloneOSX)
 - iOS (BuildTarget.iOS)
+- Android (BuildTarget.Android)
 
 I hope this feature will be officially supported by Unity.  
 But [this request thread](https://forum.unity.com/threads/remove-development-build-watermark-without-giving-up-the-build-option.944772/) has been neglected for more than 3 years.
