@@ -22,7 +22,9 @@ namespace RemoveDevWatermark.Editor
 
             if (report.summary.platform == BuildTarget.StandaloneOSX)
             {
-#if UNITY_2021
+#if UNITY_6000_3_OR_NEWER
+                var path = Path.Combine(report.summary.outputPath, "Contents", "Resources", "Data", "Resources", "unity default resources");
+#elif UNITY_2021
                 var path = Path.Combine(report.summary.outputPath, "Contents", "Resources", "unity default resources");
 #else
                 var path = Path.Combine(report.summary.outputPath, "Contents", "Resources", "Data", "Resources", "unity default resources");
@@ -39,7 +41,9 @@ namespace RemoveDevWatermark.Editor
 
             if (report.summary.platform == BuildTarget.iOS)
             {
-#if UNITY_2021 || UNITY_2022
+#if UNITY_6000_3_OR_NEWER
+                var path = Path.Combine(report.summary.outputPath, "Data", "Resources", "unity default resources");
+#elif UNITY_2021_1_OR_NEWER || UNITY_2022_1_OR_NEWER
                 var path = Path.Combine(report.summary.outputPath, "Data", "unity default resources");
 #else
                 var path = Path.Combine(report.summary.outputPath, "Data", "Resources", "unity default resources");
@@ -48,14 +52,14 @@ namespace RemoveDevWatermark.Editor
                 return Execute(modifiableFile);
             }
 
-#if UNITY_2022
+#if UNITY_2022_1_OR_NEWER
             if (report.summary.platform == BuildTarget.Android)
             {
                 var modifiableZip = new ModifiableZip(report.summary.outputPath, "assets/bin/Data/unity default resources");
                 var log = Execute(modifiableZip);
                 SignAndroidApk(report.summary.outputPath);
                 return log;
-            }      
+            }
 #endif
 
             return (LogType.Warning, $"Unknown Platform: {report.summary.platform}");
@@ -71,7 +75,9 @@ namespace RemoveDevWatermark.Editor
             var index = KMP(bytes, nameHex);
             if (index == -1) return (LogType.Error, "nameHex is not found");
 
-#if UNITY_2021 || UNITY_2022
+#if UNITY_6000_3_OR_NEWER
+            const int widthIndex = 24;
+#elif UNITY_2021_1_OR_NEWER || UNITY_2022_1_OR_NEWER
             const int widthIndex = 28;
 #else
             const int widthIndex = 24;
@@ -80,7 +86,9 @@ namespace RemoveDevWatermark.Editor
             if (bytes[index + widthIndex] != widthValue) return (LogType.Error, $"bytes[index + widthIndex]({bytes[index + widthIndex]}) != widthValue({widthValue})");
             bytes[index + widthIndex] = 1;
 
-#if UNITY_2021 || UNITY_2022
+#if UNITY_6000_3_OR_NEWER
+            const int heightIndex = 28;
+#elif UNITY_2021_1_OR_NEWER || UNITY_2022_1_OR_NEWER
             const int heightIndex = 32;
 #else
             const int heightIndex = 28;
