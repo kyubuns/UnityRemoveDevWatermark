@@ -31,7 +31,7 @@ namespace RemoveDevWatermark.Editor
 #endif
                 var modifiableFile = new ModifiableFile(path);
                 var log = Execute(modifiableFile);
-                
+
 #if UNITY_STANDALONE_OSX
                 Debug.Log($"BuildPostProcessor.OnPostprocessBuild / MacOSCodeSigning.CodeSignAppBundle({report.summary.outputPath})");
                 UnityEditor.OSXStandalone.MacOSCodeSigning.CodeSignAppBundle(report.summary.outputPath);
@@ -75,29 +75,43 @@ namespace RemoveDevWatermark.Editor
             var index = KMP(bytes, nameHex);
             if (index == -1) return (LogType.Error, "nameHex is not found");
 
-#if UNITY_6000_3_OR_NEWER
-            const int widthIndex = 24;
-#elif UNITY_2021_1_OR_NEWER || UNITY_2022_1_OR_NEWER
-            const int widthIndex = 28;
-#else
-            const int widthIndex = 24;
-#endif
             const int widthValue = 115;
-            if (bytes[index + widthIndex] != widthValue) return (LogType.Error, $"bytes[index + widthIndex]({bytes[index + widthIndex]}) != widthValue({widthValue})");
-            bytes[index + widthIndex] = 1;
-
-#if UNITY_6000_3_OR_NEWER
-            const int heightIndex = 28;
-#elif UNITY_2021_1_OR_NEWER || UNITY_2022_1_OR_NEWER
-            const int heightIndex = 32;
-#else
-            const int heightIndex = 28;
-#endif
             const int heightValue = 17;
-            if (bytes[index + heightIndex] != heightValue) return (LogType.Error, $"bytes[index + heightIndex]({bytes[index + heightIndex]}) != heightValue({heightValue})");
+            var offsetPair = GetWatermarkOffsetPair(bytes, index, widthValue, heightValue);
+            if (offsetPair == null)
+            {
+                return (LogType.Error, $"Unsupported watermark layout near index {index}: expected width={widthValue} and height={heightValue} at offsets 24/28 or 28/32");
+            }
+
+            var (widthIndex, heightIndex) = offsetPair.Value;
+            bytes[index + widthIndex] = 1;
             bytes[index + heightIndex] = 1;
 
             modifiableDocument.WriteAllBytes(bytes);
+            return null;
+        }
+
+        private static (int widthIndex, int heightIndex)? GetWatermarkOffsetPair(byte[] bytes, int index, int widthValue, int heightValue)
+        {
+            var candidateOffsets = new[]
+            {
+                (widthIndex: 24, heightIndex: 28),
+                (widthIndex: 28, heightIndex: 32)
+            };
+
+            foreach (var candidate in candidateOffsets)
+            {
+                if (bytes.Length <= index + candidate.heightIndex)
+                {
+                    continue;
+                }
+
+                if (bytes[index + candidate.widthIndex] == widthValue && bytes[index + candidate.heightIndex] == heightValue)
+                {
+                    return candidate;
+                }
+            }
+
             return null;
         }
 
