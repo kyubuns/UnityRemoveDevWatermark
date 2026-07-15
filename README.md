@@ -1,3 +1,11 @@
+# ⚠️ Unity 6.3 or later: This package is no longer necessary
+
+Unity 6.3 officially supports hiding the development build watermark by setting [`UnityEngine.Rendering.Watermark.showDeveloperWatermark`](https://docs.unity3d.com/6000.3/Documentation/ScriptReference/Rendering.Watermark-showDeveloperWatermark.html) to `false`.
+
+This package is only needed for Unity 6.2 and earlier.
+
+---
+
 Unity Remove Dev Watermark
 ===
 
