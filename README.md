@@ -1,6 +1,6 @@
 # ⚠️ Unity 6.3 or later: This package is no longer necessary
 
-Unity 6.3 officially supports hiding the development build watermark by setting [`UnityEngine.Rendering.Watermark.showDeveloperWatermark`](https://docs.unity3d.com/6000.3/Documentation/ScriptReference/Rendering.Watermark-showDeveloperWatermark.html) to `false`.
+Unity 6.3 officially supports hiding the development build watermark by setting [`UnityEngine.Rendering.Watermark.showDeveloperWatermark`](https://docs.unity3d.com/ScriptReference/Rendering.Watermark-showDeveloperWatermark.html) to `false`.
 
 This package is only needed for Unity 6.2 and earlier.
 
@@ -24,8 +24,11 @@ The following platforms are currently supported
 - iOS (BuildTarget.iOS)
 - Android (BuildTarget.Android)
 
-I hope this feature will be officially supported by Unity.  
-But [this request thread](https://forum.unity.com/threads/remove-development-build-watermark-without-giving-up-the-build-option.944772/) has been neglected for more than 6 years!
+~~I hope this feature will be officially supported by Unity.~~
+
+~~But [this request thread](https://forum.unity.com/threads/remove-development-build-watermark-without-giving-up-the-build-option.944772/) has been neglected for more than 5 years!~~
+
+Thank you for officially supporting this, Unity! See [`Watermark.showDeveloperWatermark`](https://docs.unity3d.com/ScriptReference/Rendering.Watermark-showDeveloperWatermark.html) for details.
 
 
 ## Installation
